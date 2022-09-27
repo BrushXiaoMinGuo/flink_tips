@@ -1,6 +1,8 @@
 package dto;
 
 public class Metric {
+
+
     public String getName() {
         return name;
     }
@@ -15,6 +17,9 @@ public class Metric {
 
     public void setValue(int value) {
         this.value = value;
+    }
+
+    public Metric() {
     }
 
     public Metric(String name, int value) {

@@ -1,6 +1,10 @@
 package kafkaSource;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import dto.Metric;
+import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
 import org.apache.flink.streaming.util.serialization.SimpleStringSchema;
@@ -25,6 +29,15 @@ public class kafkaSource {
         props.put("auto.offset.reset", "latest");
 
         env.addSource(new FlinkKafkaConsumer("test", new SimpleStringSchema(), props))
+//                .map(new MapFunction<String, String>() {
+//                    @Override
+//                    public String map(String str) throws Exception {
+//                        JSON json = JSON.parseObject(str);
+//                        Metric metric = JSON.toJavaObject(json, Metric.class);
+//                        return metric.getName();
+//                    }
+//                })
+                .map(json->JSON.toJavaObject(JSON.parseObject((String) json),Metric.class))
                 .print();
 
         env.execute("KafkaWordCount");

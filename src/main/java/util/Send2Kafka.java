@@ -2,6 +2,7 @@ package util;
 
 import java.util.Properties;
 
+import com.alibaba.fastjson.JSON;
 import dto.Metric;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
@@ -21,8 +22,8 @@ public class Send2Kafka {
         Producer<String, String> producer = new KafkaProducer<>(props);
         while (true){
             Metric metric = new Metric("pv", 1);
-            producer.send( new ProducerRecord<String, String>(topic,  metric.toString()));
-            Thread.sleep(1000);
+            producer.send( new ProducerRecord(topic, JSON.toJSONString(metric)));
+            Thread.sleep(5000);
 
         }
 
