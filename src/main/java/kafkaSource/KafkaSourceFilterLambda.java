@@ -1,21 +1,14 @@
 package kafkaSource;
 
-
 import com.alibaba.fastjson.JSON;
 import dto.Metric;
-import org.apache.flink.api.common.functions.FilterFunction;
-import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
 import org.apache.flink.streaming.util.serialization.SimpleStringSchema;
-import org.apache.flink.util.Collector;
 
-
-import java.util.ArrayList;
 import java.util.Properties;
 
-public class kafkaSource {
-
+public class KafkaSourceFilterLambda {
     public static final String broker_list = "localhost:9092";
     public static final String topic = "test";
 
@@ -31,15 +24,6 @@ public class kafkaSource {
         props.put("auto.offset.reset", "latest");
 
         env.addSource(new FlinkKafkaConsumer("test", new SimpleStringSchema(), props))
-//                .map(new MapFunction<String, String>() {
-//                    @Override
-//                    public String map(String str) throws Exception {
-//                        JSON json = JSON.parseObject(str);
-//                        Metric metric = JSON.toJavaObject(json, Metric.class);
-//                        return metric.getName();
-//                    }
-//                })
-//                .map(json->JSON.toJavaObject(JSON.parseObject((String) json),Metric.class))
                 .filter(json -> JSON.toJavaObject(JSON.parseObject((String) json), Metric.class).getValue() > 5)
                 .print();
 
