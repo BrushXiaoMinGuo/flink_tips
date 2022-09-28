@@ -1,23 +1,9 @@
 package dto;
 
 public class Metric {
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public double getValue() {
-        return value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
-    }
+    public String name;
+    private long timestamp;
+    public int value;
 
     public Metric() {
     }
@@ -27,15 +13,33 @@ public class Metric {
         this.value = value;
     }
 
-    public String name;
-
-    @Override
-    public String toString() {
-        return "Metric{" +
-                "name='" + name + '\'' +
-                ", value=" + value +
-                '}';
+    public Metric(String name, long timestamp, int value) {
+        this.name = name;
+        this.timestamp = timestamp;
+        this.value = value;
     }
 
-    public int value;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
 }

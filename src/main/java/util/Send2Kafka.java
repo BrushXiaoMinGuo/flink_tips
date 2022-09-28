@@ -1,5 +1,6 @@
 package util;
 
+import java.sql.Timestamp;
 import java.util.Properties;
 
 import com.alibaba.fastjson.JSON;
@@ -20,9 +21,10 @@ public class Send2Kafka {
         props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         Producer<String, String> producer = new KafkaProducer<>(props);
-        while (true){
-            Metric metric = new Metric("pv", 1);
-            producer.send( new ProducerRecord(topic, JSON.toJSONString(metric)));
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        while (true) {
+            Metric metric = new Metric("pv", timestamp.getTime(), 1);
+            producer.send(new ProducerRecord(topic, JSON.toJSONString(metric)));
             Thread.sleep(5000);
 
         }
